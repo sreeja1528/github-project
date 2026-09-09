@@ -1,0 +1,44 @@
+name: Merge Email Notification
+
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - main
+
+jobs:
+  notify:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Send merge notification email
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          secure: true
+
+          username: ${{ secrets.SMTP_USERNAME }}
+          password: ${{ secrets.SMTP_PASSWORD }}
+
+          from: ${{ secrets.SMTP_USERNAME }}
+          to: ${{ secrets.SMTP_USERNAME }}
+
+          subject: "GitHub Merge Notification"
+
+          body: |
+            Event: Pull Request Merged
+
+            Repository: ${{ github.repository }}
+
+            Branch: ${{ github.event.pull_request.base.ref }}
+
+            Triggered by: ${{ github.actor }}
+
+            Commit: ${{ github.event.pull_request.merge_commit_sha }}
+
+            Commit Message: ${{ github.event.pull_request.title }}
+
+            Pull Request:
+            ${{ github.event.pull_request.html_url }}
