@@ -1,0 +1,20 @@
+name: Merge Email Notification
+
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - main
+jobs:
+  notify:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Show merge details
+        run: |
+          echo "Event: Pull Request Merged"
+          echo "Repository: ${{ github.repository }}"
+          echo "Branch: ${{ github.event.pull_request.base.ref }}"
+          echo "Triggered by: ${{ github.actor }}"
+          echo "Commit: ${{ github.event.pull_request.merge_commit_sha }}"
