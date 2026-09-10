@@ -1,4 +1,4 @@
-name: Merge Email Notification
+name: Merge Notification
 
 on:
   pull_request:
@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Send merge notification email
+      - name: Send merge notification in email
         uses: dawidd6/action-send-mail@v3
         with:
           server_address: smtp.gmail.com
@@ -25,7 +25,7 @@ jobs:
           from: ${{ secrets.SMTP_USERNAME }}
           to: ${{ secrets.SMTP_USERNAME }}
 
-          subject: "GitHub Merge Notification"
+          subject: "Merge Notification"
 
           body: |
             Event: Pull Request Merged
